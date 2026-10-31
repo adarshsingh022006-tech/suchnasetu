@@ -2,7 +2,8 @@
 ### AI-Powered Information Gap Detection & Research Intelligence Platform
 > **Tagline:** *Connecting Information. Revealing What's Missing.*  
 > **Event:** **SHINCHAN ONLINE HACKATHON 2026**  
-> **Problem Statement:** **DIGITAL DARK SPOT – AI-Assisted Information Gap Detection Platform**
+> **Problem Statement:** **DIGITAL DARK SPOT – AI-Assisted Information Gap Detection Platform**  
+> **Live Production Deployment:** [https://suchnasetu.vercel.app](https://suchnasetu.vercel.app)
 
 ---
 
