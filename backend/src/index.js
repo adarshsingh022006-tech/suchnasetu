@@ -69,10 +69,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server (only when not running inside a serverless environment like Vercel)
+// Start Server
 async function startServer() {
   await initDatabase();
-  const PORT = config.port;
+  const PORT = process.env.PORT || config.port || 5001;
   app.listen(PORT, () => {
     console.log(`=======================================================`);
     console.log(`  SUCHNASETU BACKEND RUNNING ON http://localhost:${PORT}`);
@@ -82,11 +82,8 @@ async function startServer() {
   });
 }
 
-if (!process.env.VERCEL) {
-  startServer().catch(err => {
-    console.error('Failed to start server:', err);
-    process.exit(1);
-  });
-}
+startServer().catch(err => {
+  console.error('Failed to start server:', err);
+});
 
 export default app;
