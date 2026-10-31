@@ -69,7 +69,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server
+// Start Server (only when not running inside a serverless environment like Vercel)
 async function startServer() {
   await initDatabase();
   const PORT = config.port;
@@ -82,9 +82,11 @@ async function startServer() {
   });
 }
 
-startServer().catch(err => {
-  console.error('Failed to start server:', err);
-  process.exit(1);
-});
+if (!process.env.VERCEL) {
+  startServer().catch(err => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+  });
+}
 
 export default app;
