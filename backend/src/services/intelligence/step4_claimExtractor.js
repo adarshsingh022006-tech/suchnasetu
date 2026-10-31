@@ -358,6 +358,47 @@ function extractDeadlineText(text) {
 }
 
 /**
+ * Heuristic fallback for general and custom research inquiry domains
+ */
+function extractGenericClaimsHeuristic(source, paragraphs, expectedFields = []) {
+  const claims = [];
+  let claimSeq = 1;
+
+  for (const p of paragraphs) {
+    const text = p.text;
+    const tLower = text.toLowerCase();
+
+    for (const field of expectedFields) {
+      const fieldTerms = (field.fieldName + ' ' + (field.description || '')).toLowerCase().split(/\s+/).filter(w => w.length > 3);
+      const isRelevant = fieldTerms.some(term => tLower.includes(term));
+
+      if (isRelevant) {
+        const sentences = text.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 15);
+        const bestSentence = sentences.find(s => fieldTerms.some(term => s.toLowerCase().includes(term))) || text.slice(0, 160);
+
+        claims.push({
+          claimId: `CLM_${source.sourceId}_${claimSeq++}`,
+          fieldId: field.fieldId,
+          subject: field.fieldName,
+          predicate: 'specifies',
+          value: bestSentence.trim(),
+          context: `Asserted in source context under ${field.fieldName}`,
+          cycleOrDate: detectDateOrCycle(text, source.publishedDate),
+          sourceId: source.sourceId,
+          sourceTitle: source.title,
+          supportingText: text.length > 280 ? text.slice(0, 277) + '...' : text,
+          confidence: 'moderate',
+          uncertaintyReason: 'Extracted via structural heuristic; verify exact clause'
+        });
+        break;
+      }
+    }
+  }
+
+  return claims;
+}
+
+/**
  * Step 4: Claim Extraction Pipeline
  * Executes LLM with strict schema output, with fallback to linguistic extraction.
  */
@@ -412,6 +453,7 @@ ${segmentedContent.cleanedText.slice(0, 6000)}`;
     return llmClaims;
   }
 
+  const hasScholarship = expectedFields.some(f => f.fieldId === 'eligibility_criteria' || f.fieldId === 'income_requirements');
   const hasClinical = expectedFields.some(f => f.fieldId === 'dosage' || f.fieldId === 'indication');
   const hasPolicy = expectedFields.some(f => f.fieldId === 'jurisdiction' || f.fieldId === 'compliance_mandate');
 
@@ -421,6 +463,9 @@ ${segmentedContent.cleanedText.slice(0, 6000)}`;
   if (hasPolicy) {
     return extractPolicyClaimsHeuristic(source, segmentedContent.paragraphs);
   }
+  if (hasScholarship) {
+    return extractScholarshipClaimsHeuristic(source, segmentedContent.paragraphs);
+  }
 
-  return extractScholarshipClaimsHeuristic(source, segmentedContent.paragraphs);
+  return extractGenericClaimsHeuristic(source, segmentedContent.paragraphs, expectedFields);
 }

@@ -52,6 +52,25 @@ export async function executeIntelligencePipeline({ question, domain = 'scholars
   // STEP 6: Contradiction & Conflict Detection
   const contradictions = detectContradictions(allClaims, gapAnalysis.fields);
 
+  // Synchronize Completeness Map Metrics with detected conflicts
+  const totalFields = gapAnalysis.fields.length;
+  const supportedCount = gapAnalysis.fields.filter(f => f.status === 'Found').length;
+  const partialCount = gapAnalysis.fields.filter(f => f.status === 'Partially found').length;
+  const conflictCount = gapAnalysis.fields.filter(f => f.status === 'Conflicting evidence').length;
+  const gapCount = gapAnalysis.fields.filter(f => f.status === 'Not found in reviewed sources').length;
+  const coveragePercentage = totalFields > 0 
+    ? Math.round(((supportedCount * 1.0 + partialCount * 0.5 + conflictCount * 0.4) / totalFields) * 100)
+    : 0;
+
+  gapAnalysis.metrics = {
+    totalFields,
+    supportedCount,
+    partialCount,
+    conflictCount,
+    gapCount,
+    coveragePercentage
+  };
+
   // STEP 7: Freshness & Temporal Intelligence
   const freshness = analyzeFreshness(validSources, allClaims);
 

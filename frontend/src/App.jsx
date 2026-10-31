@@ -25,24 +25,44 @@ export default function App() {
   const [analysisStep, setAnalysisStep] = useState('');
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
-  // Initialize session on mount
+  // Initialize or restore session on mount
   useEffect(() => {
-    initDefaultSession();
+    restoreOrInitSession();
   }, []);
 
-  const initDefaultSession = async () => {
+  const restoreOrInitSession = async () => {
     try {
-      const res = await fetch('/api/research', {
+      const savedId = localStorage.getItem('suchnasetu_last_session_id');
+      if (savedId) {
+        const res = await fetch(`/api/research/${savedId}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.session) {
+            setSession(data.session);
+            setQuestion(data.session.question);
+            setDomain(data.session.domain);
+            if (data.sources) setSources(data.sources);
+            if (data.session.report) {
+              setReport(data.session.report);
+            }
+            return;
+          }
+        }
+      }
+
+      // If no valid saved session, initialize new session
+      const createRes = await fetch('/api/research', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question, domain })
       });
-      const data = await res.json();
-      if (data.success && data.session) {
-        setSession(data.session);
+      const createData = await createRes.json();
+      if (createData.success && createData.session) {
+        setSession(createData.session);
+        localStorage.setItem('suchnasetu_last_session_id', createData.session.sessionId);
       }
     } catch (err) {
-      console.warn('Initial session creation:', err);
+      console.warn('Session restoration/creation notice:', err);
     }
   };
 
@@ -55,6 +75,7 @@ export default function App() {
     });
     const data = await res.json();
     setSession(data.session);
+    localStorage.setItem('suchnasetu_last_session_id', data.session.sessionId);
     return data.session.sessionId;
   };
 
@@ -74,6 +95,7 @@ export default function App() {
       setReport(data.report);
       setQuestion(data.session.question);
       setDomain(data.session.domain);
+      localStorage.setItem('suchnasetu_last_session_id', data.sessionId);
 
       // Fetch loaded sources
       const srcRes = await fetch(`/api/research/${data.sessionId}`);

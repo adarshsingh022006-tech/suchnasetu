@@ -178,6 +178,52 @@ function evaluatePairConflict(fieldId, c1, c2) {
     }
   }
 
+  // 7. Official Portal / Application URL Discrepancy
+  if (fieldId === 'official_application_link') {
+    const url1Match = v1.match(/https?:\/\/[^\s/$.?#].[^\s]*/i)?.[0];
+    const url2Match = v2.match(/https?:\/\/[^\s/$.?#].[^\s]*/i)?.[0];
+    if (url1Match && url2Match && url1Match !== url2Match) {
+      return {
+        isConflict: true,
+        type: 'Application Gateway Portal Divergence',
+        severity: 'critical',
+        explanation: `Sources direct applicants to conflicting portal endpoints: "${url1Match}" vs "${url2Match}". Unverified links risk phishing or unauthorized third-party aggregator traps.`,
+        suggestedAction: 'Navigate only via certified government root domains (.gov.in / .nic.in).'
+      };
+    }
+  }
+
+  // 8. Eligibility Criteria & General Assertion Conflict
+  if (fieldId === 'eligibility_criteria' || true) {
+    const num1 = extractNumber(v1);
+    const num2 = extractNumber(v2);
+
+    if (num1 && num2 && Math.abs(num1 - num2) >= 1 && (v1.includes('%') || v2.includes('%') || v1.includes('mark') || v2.includes('mark'))) {
+      return {
+        isConflict: true,
+        type: 'Eligibility Benchmark Discrepancy',
+        severity: 'critical',
+        explanation: `Sources declare differing qualification thresholds: "${c1.value}" vs "${c2.value}".`,
+        suggestedAction: 'Confirm the minimum qualifying marks in the current year official notification bulletin.'
+      };
+    }
+
+    const hasNegation1 = v1.includes('not eligible') || v1.includes('prohibited') || v1.includes('cannot') || v1.includes('excluded');
+    const hasNegation2 = v2.includes('not eligible') || v2.includes('prohibited') || v2.includes('cannot') || v2.includes('excluded');
+    const hasAffirmation1 = v1.includes('eligible') || v1.includes('permitted') || v1.includes('can apply') || v1.includes('open to');
+    const hasAffirmation2 = v2.includes('eligible') || v2.includes('permitted') || v2.includes('can apply') || v2.includes('open to');
+
+    if ((hasNegation1 && hasAffirmation2) || (hasAffirmation1 && hasNegation2)) {
+      return {
+        isConflict: true,
+        type: 'Affirmation vs Exclusion Contradiction',
+        severity: 'critical',
+        explanation: `One source asserts eligibility while another declares exclusion for "${getFieldName(fieldId)}": "${c1.value}" vs "${c2.value}".`,
+        suggestedAction: 'Consult the nodal officer or statutory gazette to verify eligibility standing.'
+      };
+    }
+  }
+
   return { isConflict: false };
 }
 

@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import { config } from '../config/index.js';
 
 // In-Memory Fallback Store
@@ -7,6 +10,34 @@ const memoryStore = {
   sources: new Map(),
   reports: new Map()
 };
+
+const TMP_STORE_PATH = path.join(os.tmpdir(), 'suchnasetu_memstore.json');
+
+function saveStoreToDisk() {
+  try {
+    const serialized = {
+      sessions: Array.from(memoryStore.sessions.entries()),
+      sources: Array.from(memoryStore.sources.entries()),
+      reports: Array.from(memoryStore.reports.entries())
+    };
+    fs.writeFileSync(TMP_STORE_PATH, JSON.stringify(serialized), 'utf8');
+  } catch (err) {
+    // Silently ignore in read-only environments
+  }
+}
+
+function loadStoreFromDisk() {
+  try {
+    if (fs.existsSync(TMP_STORE_PATH)) {
+      const data = JSON.parse(fs.readFileSync(TMP_STORE_PATH, 'utf8'));
+      if (data.sessions) memoryStore.sessions = new Map(data.sessions);
+      if (data.sources) memoryStore.sources = new Map(data.sources);
+      if (data.reports) memoryStore.reports = new Map(data.reports);
+    }
+  } catch (err) {
+    // Ignore corrupt or unreadable cache
+  }
+}
 
 let isMongoConnected = false;
 
@@ -42,8 +73,10 @@ let MongooseSource = null;
 let MongooseSession = null;
 
 export async function initDatabase() {
+  loadStoreFromDisk();
+
   if (!config.mongodbUri) {
-    console.log('[SuchnaSetu Storage] No MONGODB_URI provided. Running in Demo In-Memory Storage Mode.');
+    console.log('[SuchnaSetu Storage] No MONGODB_URI provided. Running in Demo In-Memory Storage Mode (synced to temp cache).');
     return { mode: 'in_memory', connected: false };
   }
 
@@ -89,6 +122,7 @@ export const StorageRepository = {
         report: null
       };
       memoryStore.sessions.set(sessionId, session);
+      saveStoreToDisk();
       return session;
     }
   },
@@ -123,9 +157,10 @@ export const StorageRepository = {
 
       const sess = memoryStore.sessions.get(sessionId);
       if (sess) {
-        sess.sourcesCount = updated.length;
+        sess.sourcesCount = updated.filter(s => s.status !== 'removed').length;
         sess.updatedAt = new Date().toISOString();
       }
+      saveStoreToDisk();
       return sourceData;
     }
   },
@@ -153,6 +188,7 @@ export const StorageRepository = {
         if (sess) {
           sess.sourcesCount = list.filter(s => s.status !== 'removed').length;
         }
+        saveStoreToDisk();
         return true;
       }
       return false;
@@ -179,6 +215,7 @@ export const StorageRepository = {
         sess.updatedAt = new Date().toISOString();
       }
       memoryStore.reports.set(sessionId, report);
+      saveStoreToDisk();
       return report;
     }
   },
@@ -195,6 +232,7 @@ export const StorageRepository = {
       } else {
         const inMem = memoryStore.sessions.get(sessionId);
         if (inMem) inMem.report = sess.report;
+        saveStoreToDisk();
       }
       return item;
     }

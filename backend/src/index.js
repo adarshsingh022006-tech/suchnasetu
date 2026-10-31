@@ -17,6 +17,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Express Trust Proxy (Essential for Vercel and cloud reverse-proxies)
+app.set('trust proxy', 1);
+
 // Security Middleware: CORS
 app.use(cors({
   origin: '*',

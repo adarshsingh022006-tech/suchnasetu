@@ -13,22 +13,54 @@ export function computeContentHash(text) {
  * @returns {Promise<Object>}
  */
 export async function scrapeWebpage(targetUrl) {
-  const ssrfCheck = await validateUrlForSsrf(targetUrl);
-  if (!ssrfCheck.valid) {
-    throw new Error(`SSRF Security Error: ${ssrfCheck.reason}`);
-  }
+  let currentUrl = targetUrl;
+  let redirectsCount = 0;
+  const maxRedirects = 3;
+  let response = null;
+  let lastSsrfCheck = null;
 
-  const response = await axios.get(targetUrl, {
-    timeout: 12000,
-    maxContentLength: 5 * 1024 * 1024, // 5MB max html
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) SuchnaSetuResearchBot/1.0 (+https://suchnasetu.internal/bot)',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'Accept-Language': 'en-US,en;q=0.9'
-    },
-    maxRedirects: 3,
-    validateStatus: (status) => status >= 200 && status < 300
-  });
+  while (redirectsCount <= maxRedirects) {
+    const ssrfCheck = await validateUrlForSsrf(currentUrl);
+    if (!ssrfCheck.valid) {
+      throw new Error(`SSRF Security Error: ${ssrfCheck.reason}`);
+    }
+    lastSsrfCheck = ssrfCheck;
+
+    try {
+      response = await axios.get(currentUrl, {
+        timeout: 12000,
+        maxContentLength: 5 * 1024 * 1024, // 5MB max html
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) SuchnaSetuResearchBot/1.0 (+https://suchnasetu.internal/bot)',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9'
+        },
+        maxRedirects: 0,
+        validateStatus: (status) => (status >= 200 && status < 400)
+      });
+    } catch (err) {
+      if (err.response && err.response.status >= 300 && err.response.status < 400) {
+        response = err.response;
+      } else {
+        throw err;
+      }
+    }
+
+    if (response.status >= 300 && response.status < 400) {
+      const redirectLocation = response.headers.location;
+      if (!redirectLocation) {
+        throw new Error('Redirect returned without Location header.');
+      }
+      currentUrl = new URL(redirectLocation, currentUrl).toString();
+      redirectsCount++;
+      if (redirectsCount > maxRedirects) {
+        throw new Error('Too many redirects encountered (max 3 allowed).');
+      }
+      continue;
+    }
+
+    break;
+  }
 
   const html = response.data;
   const $ = cheerio.load(html);
@@ -71,11 +103,11 @@ export async function scrapeWebpage(targetUrl) {
   }
 
   const finalContent = extractedContent.length > 50 ? extractedContent : $('body').text().replace(/\s+/g, ' ').trim();
-  const domain = ssrfCheck.parsedUrl.hostname;
+  const domain = lastSsrfCheck?.parsedUrl?.hostname || new URL(currentUrl).hostname;
   const contentHash = computeContentHash(finalContent);
 
   return {
-    url: targetUrl,
+    url: currentUrl,
     domain,
     title,
     publishedDate: publishedDate ? String(publishedDate).slice(0, 100) : null,

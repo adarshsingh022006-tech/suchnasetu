@@ -26,16 +26,23 @@ ${report.fields?.filter(f => f.status === 'Found').map(f => `### ${f.fieldName}
 - Summary: ${f.assessmentSummary}
 - Claims:
 ${f.claims?.map(c => `  * [${c.claimId}] ${c.subject}: ${c.value} (Source: ${c.sourceTitle})`).join('\n') || 'None'}
-`).join('\n')}
+`).join('\n') || 'None fully established.'}
 
-## 2. Potential Information Gaps ("Not found in reviewed sources")
+## 2. Partially Established Findings
+${report.fields?.filter(f => f.status === 'Partially found').map(f => `### ${f.fieldName}
+- Status: Partially found
+- Reason: ${f.gapReason || f.assessmentSummary}
+- Missing Specifics: ${f.missingElements?.join(', ') || 'Operational specifications required'}
+`).join('\n') || 'None.'}
+
+## 3. Potential Information Gaps ("Not found in reviewed sources")
 ${report.fields?.filter(f => f.status === 'Not found in reviewed sources').map(f => `### ${f.fieldName}
 - Status: Not found in reviewed sources
 - Reason: ${f.gapReason}
 - Missing Elements: ${f.missingElements?.join(', ')}
-`).join('\n')}
+`).join('\n') || 'None.'}
 
-## 3. Possible Contradictions
+## 4. Possible Contradictions & Divergences
 ${report.contradictions?.map(c => `### [${c.conflictId}] ${c.fieldName}: ${c.conflictType}
 - Severity: ${c.severity.toUpperCase()}
 - Explanation: ${c.explanation}
@@ -44,10 +51,10 @@ ${report.contradictions?.map(c => `### [${c.conflictId}] ${c.fieldName}: ${c.con
 - Suggested Action: ${c.suggestedAction}
 `).join('\n') || 'No major contradictions detected.'}
 
-## 4. Freshness & Temporal Cycle Warnings
+## 5. Freshness & Temporal Cycle Warnings
 ${report.freshness?.warnings?.map(w => `- [${w.type}] ${w.message} (Source: ${w.sourceTitle})`).join('\n') || 'All sources consistent with current cycle.'}
 
-## 5. Verification Checklist
+## 6. Verification Checklist
 ${report.checklist?.map(item => `[${item.completed ? 'x' : ' '}] (${item.priority}) ${item.task}
     Reason: ${item.reason}
     Suggested Source: ${item.suggestedAuthoritativeSource}

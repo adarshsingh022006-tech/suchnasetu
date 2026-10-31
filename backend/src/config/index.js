@@ -14,7 +14,7 @@ export const config = {
   nodeEnv: process.env.NODE_ENV || 'development',
   mongodbUri: process.env.MONGODB_URI || '',
   geminiApiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || '',
-  geminiModel: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-1.5-flash',
   maxUploadSizeBytes: 10 * 1024 * 1024, // 10MB
   scrapeTimeoutMs: 12000,
   rateLimitWindowMs: 15 * 60 * 1000,

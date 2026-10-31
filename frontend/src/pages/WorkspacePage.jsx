@@ -406,7 +406,7 @@ export function WorkspacePage({
             <FileCheck2 className="w-8 h-8 mx-auto text-slate-400 mb-1.5" />
             <p className="text-xs font-semibold text-slate-700">No sources added to workspace yet.</p>
             <p className="text-[11px] text-slate-500 mt-0.5">
-              Paste a URL, upload a PDF, or click "Load Official Scholarship Case" above.
+              Select a Preset Inquiry above, paste a research URL, or upload a PDF document.
             </p>
           </div>
         ) : (

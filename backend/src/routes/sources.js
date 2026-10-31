@@ -27,10 +27,27 @@ const upload = multer({
     if (file.mimetype === 'application/pdf' || file.originalname.toLowerCase().endsWith('.pdf')) {
       cb(null, true);
     } else {
-      cb(new Error('Only PDF documents (.pdf) are permitted.'));
+      const err = new Error('Only PDF documents (.pdf) are permitted.');
+      err.statusCode = 400;
+      cb(err);
     }
   }
 });
+
+const uploadPdfMiddleware = (req, res, next) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) {
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ error: 'File size exceeds 10MB limit.' });
+        }
+        return res.status(400).json({ error: `Upload error: ${err.message}` });
+      }
+      return res.status(400).json({ error: err.message || 'Invalid file uploaded.' });
+    }
+    next();
+  });
+};
 
 // POST /api/sources/url
 router.post('/url', async (req, res) => {
@@ -105,15 +122,21 @@ router.post('/text', async (req, res) => {
 });
 
 // POST /api/sources/upload
-router.post('/upload', upload.single('file'), async (req, res) => {
+router.post('/upload', uploadPdfMiddleware, async (req, res) => {
   try {
     const { sessionId } = req.body;
     if (!sessionId) {
       return res.status(400).json({ error: 'sessionId is required.' });
     }
 
-    if (!req.file) {
+    if (!req.file || !req.file.buffer) {
       return res.status(400).json({ error: 'No PDF file was uploaded.' });
+    }
+
+    // Verify PDF Magic Bytes (%PDF-)
+    const magic = req.file.buffer.slice(0, 5).toString('ascii');
+    if (!magic.startsWith('%PDF-')) {
+      return res.status(400).json({ error: 'Uploaded file is not a valid PDF document (missing standard %PDF- header).' });
     }
 
     const session = await StorageRepository.getSession(sessionId);
