@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Download, Copy, Check, Printer, FileText } from 'lucide-react';
+import { X, Download, Copy, Check, FileText } from 'lucide-react';
 
 export function ExportModal({ isOpen, onClose, report, session }) {
   const [copied, setCopied] = useState(false);
@@ -83,65 +83,61 @@ Disclaimer: ${report.completenessDisclaimer || report.executiveSummary?.epistemi
     downloadAnchor.remove();
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-md">
-      <div className="bg-navy-900 border border-slate-700/80 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+      <div className="bg-white border border-slate-200 rounded-2xl max-w-xl w-full p-6 shadow-xl relative">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-cyan-400" />
-            <h3 className="text-lg font-bold text-white">Export Research Intelligence Report</h3>
+            <FileText className="w-5 h-5 text-blue-700" />
+            <h3 className="text-base font-bold text-slate-900">Export Intelligence Brief</h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <p className="text-sm text-slate-300 mt-3">
-          Download or copy the complete structured report including claim citations, gap analyses, and actionable verification checklists.
+        <p className="text-xs text-slate-600 mt-3 leading-relaxed">
+          Export the full verified intelligence report, complete with verbatim quotes, detected gaps, and next verification steps.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
           <button
             onClick={handleCopyMarkdown}
-            className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-700 bg-navy-850 hover:bg-slate-800 transition group"
+            className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
           >
-            {copied ? <Check className="w-6 h-6 text-emerald-400" /> : <Copy className="w-6 h-6 text-indigo-400 group-hover:scale-110 transition" />}
-            <span className="text-xs font-semibold text-slate-200 mt-2">
-              {copied ? 'Copied to Clipboard!' : 'Copy Markdown'}
+            {copied ? <Check className="w-5 h-5 text-emerald-600" /> : <Copy className="w-5 h-5 text-blue-700" />}
+            <span className="text-xs font-bold text-slate-800 mt-2">
+              {copied ? 'Copied!' : 'Copy Markdown'}
             </span>
-            <span className="text-[11px] text-slate-400 mt-0.5">Plaintext formatted</span>
+            <span className="text-[10px] text-slate-500 mt-0.5">Clipboard text</span>
           </button>
 
           <button
             onClick={handleDownloadMarkdown}
-            className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-700 bg-navy-850 hover:bg-slate-800 transition group"
+            className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
           >
-            <Download className="w-6 h-6 text-cyan-400 group-hover:scale-110 transition" />
-            <span className="text-xs font-semibold text-slate-200 mt-2">Download .MD</span>
-            <span className="text-[11px] text-slate-400 mt-0.5">Markdown file</span>
+            <Download className="w-5 h-5 text-blue-700" />
+            <span className="text-xs font-bold text-slate-800 mt-2">Download .MD</span>
+            <span className="text-[10px] text-slate-500 mt-0.5">Markdown file</span>
           </button>
 
           <button
             onClick={handleDownloadJson}
-            className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-700 bg-navy-850 hover:bg-slate-800 transition group"
+            className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
           >
-            <Download className="w-6 h-6 text-purple-400 group-hover:scale-110 transition" />
-            <span className="text-xs font-semibold text-slate-200 mt-2">Download .JSON</span>
-            <span className="text-[11px] text-slate-400 mt-0.5">Full structured dataset</span>
+            <Download className="w-5 h-5 text-blue-700" />
+            <span className="text-xs font-bold text-slate-800 mt-2">Download .JSON</span>
+            <span className="text-[10px] text-slate-500 mt-0.5">Raw structured data</span>
           </button>
         </div>
 
-        <div className="mt-4 pt-4 border-t border-slate-800 flex justify-end">
+        <div className="mt-6 pt-4 border-t border-slate-100 flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium transition"
+            className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition"
           >
             Close
           </button>

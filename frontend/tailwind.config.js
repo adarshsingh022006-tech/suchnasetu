@@ -4,36 +4,36 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        navy: {
-          950: '#070B14',
-          900: '#0A0F1E',
-          850: '#0E172B',
-          800: '#131F38',
-          750: '#1A294A',
-          700: '#233760',
-          600: '#324E85',
+        brand: {
+          50: '#EFF6FF',
+          100: '#DBEAFE',
+          200: '#BFDBFE',
+          300: '#93C5FD',
+          400: '#60A5FA',
+          500: '#3B82F6',
+          600: '#2563EB',
+          700: '#1D4ED8',
+          800: '#1E40AF',
+          900: '#1E3A8A',
+          950: '#172554',
         },
-        darkspot: {
-          blue: '#3B82F6',
-          indigo: '#6366F1',
-          violet: '#8B5CF6',
-          cyan: '#06B6D4',
-          amber: '#F59E0B',
-          rose: '#F43F5E',
-          emerald: '#10B981',
+        civic: {
+          saffron: '#EA580C',
+          navy: '#0F172A',
+          green: '#047857',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
-      animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'spin-slow': 'spin 12s linear infinite',
+      boxShadow: {
+        'subtle': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
+        'card': '0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04)',
+        'card-hover': '0 4px 12px 0 rgba(15, 23, 42, 0.08), 0 2px 4px -1px rgba(15, 23, 42, 0.04)',
       }
     },
   },

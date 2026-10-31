@@ -1,44 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
   <defs>
-    <linearGradient id="bridgeGrad" x1="10" y1="50" x2="90" y2="50" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#3B82F6"/>
-      <stop offset="50%" stop-color="#6366F1"/>
-      <stop offset="100%" stop-color="#8B5CF6"/>
+    <linearGradient id="bridgeMain" x1="10" y1="50" x2="90" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="50%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#0284C7"/>
     </linearGradient>
-    <linearGradient id="nodeGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#06B6D4"/>
-      <stop offset="100%" stop-color="#6366F1"/>
-    </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
   </defs>
 
-  <!-- Background Hex/Node Ring -->
-  <circle cx="50" cy="50" r="44" stroke="#1E293B" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
+  <!-- Clean Outer Shield Ring -->
+  <circle cx="50" cy="50" r="44" stroke="#E2E8F0" stroke-width="2.5" fill="#FFFFFF"/>
 
   <!-- Bridge Arch Structure -->
-  <path d="M 18 68 C 30 36, 70 36, 82 68" stroke="url(#bridgeGrad)" stroke-width="4.5" stroke-linecap="round" filter="url(#glow)"/>
-  <path d="M 24 68 C 34 46, 66 46, 76 68" stroke="url(#bridgeGrad)" stroke-width="2" opacity="0.4"/>
+  <path d="M 20 68 C 30 38, 70 38, 80 68" stroke="url(#bridgeMain)" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 26 68 C 35 48, 65 48, 74 68" stroke="#93C5FD" stroke-width="2" opacity="0.8"/>
 
-  <!-- Vertical Suspension Cables -->
-  <line x1="32" y1="50" x2="32" y2="68" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
-  <line x1="41" y1="43" x2="41" y2="68" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
-  <line x1="50" y1="40" x2="50" y2="68" stroke="#8B5CF6" stroke-width="2" opacity="0.9"/>
-  <line x1="59" y1="43" x2="59" y2="68" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
-  <line x1="68" y1="50" x2="68" y2="68" stroke="#8B5CF6" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.7"/>
+  <!-- Vertical Suspension Pillars -->
+  <line x1="34" y1="51" x2="34" y2="68" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="2 1.5"/>
+  <line x1="42" y1="44" x2="42" y2="68" stroke="#1D4ED8" stroke-width="1.5" stroke-dasharray="2 1.5"/>
+  <line x1="50" y1="41" x2="50" y2="68" stroke="#1E3A8A" stroke-width="2"/>
+  <line x1="58" y1="44" x2="58" y2="68" stroke="#1D4ED8" stroke-width="1.5" stroke-dasharray="2 1.5"/>
+  <line x1="66" y1="51" x2="66" y2="68" stroke="#2563EB" stroke-width="1.5" stroke-dasharray="2 1.5"/>
 
-  <!-- Bridge Base Deck -->
-  <line x1="14" y1="68" x2="86" y2="68" stroke="#64748B" stroke-width="3" stroke-linecap="round"/>
+  <!-- Bridge Base Roadbed -->
+  <line x1="16" y1="68" x2="84" y2="68" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
 
-  <!-- Information Nodes (Connecting Dots) -->
-  <circle cx="18" cy="68" r="5" fill="#3B82F6" />
-  <circle cx="50" cy="40" r="6" fill="#06B6D4" filter="url(#glow)" />
-  <circle cx="82" cy="68" r="5" fill="#8B5CF6" />
+  <!-- Connected Information Nodes -->
+  <circle cx="20" cy="68" r="4" fill="#1E3A8A" />
+  <circle cx="50" cy="41" r="5" fill="#2563EB" />
+  <circle cx="80" cy="68" r="4" fill="#0284C7" />
   
-  <!-- Discovered Dark Spot (Radar / Unconnected Node revealing the gap) -->
-  <circle cx="50" cy="22" r="4.5" fill="#F59E0B" />
-  <circle cx="50" cy="22" r="8" stroke="#F59E0B" stroke-width="1" stroke-dasharray="2 2" opacity="0.8"/>
-  <line x1="50" y1="28" x2="50" y2="34" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="1 2"/>
+  <!-- Discovered Information Dark Spot (Amber Alert Beacon) -->
+  <circle cx="50" cy="22" r="4.5" fill="#EA580C" />
+  <circle cx="50" cy="22" r="8" stroke="#EA580C" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.6"/>
+  <line x1="50" y1="28" x2="50" y2="35" stroke="#EA580C" stroke-width="1.5" stroke-dasharray="1 1.5"/>
 </svg>

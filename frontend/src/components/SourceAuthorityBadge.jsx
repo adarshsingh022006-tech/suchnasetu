@@ -6,17 +6,17 @@ export function SourceAuthorityBadge({ category = '', badgeClass = '' }) {
 
   if (norm.includes('official') || norm.includes('gov')) {
     return (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-        Official Government
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
+        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+        Official Government Source
       </span>
     );
   }
 
   if (norm.includes('institution') || norm.includes('academic') || norm.includes('edu')) {
     return (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30">
-        <GraduationCap className="w-3.5 h-3.5 text-blue-400" />
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-50 text-blue-800 border border-blue-200/80">
+        <GraduationCap className="w-3.5 h-3.5 text-blue-600 shrink-0" />
         Institutional / Academic
       </span>
     );
@@ -24,8 +24,8 @@ export function SourceAuthorityBadge({ category = '', badgeClass = '' }) {
 
   if (norm.includes('editorial') || norm.includes('news')) {
     return (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/30">
-        <Newspaper className="w-3.5 h-3.5 text-purple-400" />
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-purple-50 text-purple-800 border border-purple-200/80">
+        <Newspaper className="w-3.5 h-3.5 text-purple-600 shrink-0" />
         News / Editorial
       </span>
     );
@@ -33,17 +33,17 @@ export function SourceAuthorityBadge({ category = '', badgeClass = '' }) {
 
   if (norm.includes('document') || norm.includes('pdf')) {
     return (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
-        <FileText className="w-3.5 h-3.5 text-cyan-400" />
-        Direct Document
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-cyan-50 text-cyan-800 border border-cyan-200/80">
+        <FileText className="w-3.5 h-3.5 text-cyan-600 shrink-0" />
+        Verified Document (PDF)
       </span>
     );
   }
 
   return (
-    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30">
-      <Globe className="w-3.5 h-3.5 text-amber-400" />
-      General / Community
+    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200/80">
+      <Globe className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+      General / Community Web
     </span>
   );
 }

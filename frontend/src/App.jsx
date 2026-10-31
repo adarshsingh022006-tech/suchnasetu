@@ -41,7 +41,7 @@ export default function App() {
         setSession(data.session);
       }
     } catch (err) {
-      console.warn('Initial session creation (will retry on demand):', err);
+      console.warn('Initial session creation:', err);
     }
   };
 
@@ -59,7 +59,7 @@ export default function App() {
 
   const handleQuickDemo = async () => {
     setIsAnalyzing(true);
-    setAnalysisStep('Loading official scholarship benchmark sources...');
+    setAnalysisStep('Ingesting official scholarship benchmark circulars...');
     try {
       const res = await fetch('/api/research/demo/bootstrap', { method: 'POST' });
       const data = await res.json();
@@ -202,7 +202,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-navy-950 text-slate-100 selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 font-sans selection:bg-blue-600/10 selection:text-blue-900">
       {/* Top Navbar */}
       <Navbar
         activeTab={activeTab}

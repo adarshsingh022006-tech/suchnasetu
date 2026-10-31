@@ -6,30 +6,26 @@ export function CompletenessRadar({ completenessMap = {}, fields = [], disclaime
   const supportedCount = completenessMap.supportedCount || 0;
   const partialCount = completenessMap.partialCount || 0;
   const gapCount = completenessMap.gapCount || 0;
-  const totalFields = completenessMap.totalFields || fields.length;
 
   return (
-    <div className="glass-panel rounded-2xl p-6 border border-slate-800 shadow-xl relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-800/80">
+    <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-sm relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-200/80">
         <div>
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
-            <h3 className="text-lg font-bold text-white tracking-tight">Research Completeness Map</h3>
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
+            <h3 className="text-lg font-bold text-slate-900 tracking-tight">Research Completeness Map</h3>
           </div>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Systematic evidence coverage across expected inquiry dimensions
           </p>
         </div>
 
         {/* Coverage Meter */}
-        <div className="flex items-center gap-4 bg-navy-900/90 px-5 py-3 rounded-xl border border-slate-800">
-          <div className="relative w-16 h-16 flex items-center justify-center">
-            <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
+        <div className="flex items-center gap-4 bg-slate-50 px-5 py-3 rounded-xl border border-slate-200">
+          <div className="relative w-14 h-14 flex items-center justify-center">
+            <svg className="w-14 h-14 transform -rotate-90" viewBox="0 0 36 36">
               <path
-                className="text-slate-800"
+                className="text-slate-200"
                 strokeWidth="3.5"
                 stroke="currentColor"
                 fill="none"
@@ -37,7 +33,7 @@ export function CompletenessRadar({ completenessMap = {}, fields = [], disclaime
               />
               <path
                 className={`${
-                  percentage >= 70 ? 'text-emerald-500' : percentage >= 40 ? 'text-amber-500' : 'text-rose-500'
+                  percentage >= 70 ? 'text-emerald-600' : percentage >= 40 ? 'text-amber-600' : 'text-rose-600'
                 } transition-all duration-1000 ease-out`}
                 strokeDasharray={`${percentage}, 100`}
                 strokeWidth="3.5"
@@ -47,14 +43,14 @@ export function CompletenessRadar({ completenessMap = {}, fields = [], disclaime
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
               />
             </svg>
-            <div className="absolute text-sm font-bold text-white">{percentage}%</div>
+            <div className="absolute text-sm font-extrabold text-slate-900">{percentage}%</div>
           </div>
           <div>
-            <div className="text-xs uppercase tracking-wider font-semibold text-slate-400">Reviewed Coverage</div>
-            <div className="text-sm font-medium text-slate-200 mt-0.5">
-              <span className="text-emerald-400 font-semibold">{supportedCount}</span> Supported ·{' '}
-              <span className="text-amber-400 font-semibold">{partialCount}</span> Partial ·{' '}
-              <span className="text-rose-400 font-semibold">{gapCount}</span> Gaps
+            <div className="text-[11px] uppercase tracking-wider font-bold text-slate-500">Reviewed Coverage</div>
+            <div className="text-xs font-semibold text-slate-800 mt-0.5">
+              <span className="text-emerald-700 font-bold">{supportedCount}</span> Supported ·{' '}
+              <span className="text-amber-700 font-bold">{partialCount}</span> Partial ·{' '}
+              <span className="text-orange-700 font-bold">{gapCount}</span> Gaps
             </div>
           </div>
         </div>
@@ -71,53 +67,53 @@ export function CompletenessRadar({ completenessMap = {}, fields = [], disclaime
           return (
             <div
               key={field.fieldId}
-              className={`p-3.5 rounded-xl border transition-all ${
+              className={`p-4 rounded-xl border transition-all ${
                 isFound
-                  ? 'bg-emerald-950/20 border-emerald-800/40 hover:border-emerald-700/60'
+                  ? 'bg-emerald-50/60 border-emerald-200/90 hover:border-emerald-300'
                   : isPartial
-                  ? 'bg-amber-950/20 border-amber-800/40 hover:border-amber-700/60'
+                  ? 'bg-amber-50/60 border-amber-200/90 hover:border-amber-300'
                   : isConflict
-                  ? 'bg-rose-950/20 border-rose-800/40 hover:border-rose-700/60'
-                  : 'bg-orange-950/20 border-orange-800/50 hover:border-orange-700/70'
+                  ? 'bg-rose-50/60 border-rose-200/90 hover:border-rose-300'
+                  : 'bg-orange-50/70 border-orange-200/90 hover:border-orange-300'
               }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-semibold text-slate-200">{field.fieldName}</span>
+                    <span className="text-sm font-bold text-slate-900">{field.fieldName}</span>
                     {field.critical && (
-                      <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                      <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.2 rounded bg-rose-100 text-rose-800 border border-rose-200">
                         Critical
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{field.description}</p>
+                  <p className="text-xs text-slate-600 line-clamp-1 mt-0.5">{field.description}</p>
                 </div>
 
                 <div className="shrink-0 mt-0.5">
-                  {isFound && <CheckCircle2 className="w-5 h-5 text-emerald-400" />}
-                  {isPartial && <AlertTriangle className="w-5 h-5 text-amber-400" />}
-                  {isConflict && <ShieldAlert className="w-5 h-5 text-rose-400" />}
-                  {isGap && <XCircle className="w-5 h-5 text-orange-400" />}
+                  {isFound && <CheckCircle2 className="w-5 h-5 text-emerald-600" />}
+                  {isPartial && <AlertTriangle className="w-5 h-5 text-amber-600" />}
+                  {isConflict && <ShieldAlert className="w-5 h-5 text-rose-600" />}
+                  {isGap && <XCircle className="w-5 h-5 text-orange-600" />}
                 </div>
               </div>
 
               {/* Status pill & score bar */}
-              <div className="mt-3 pt-2.5 border-t border-slate-800/60 flex items-center justify-between text-xs">
+              <div className="mt-3 pt-2.5 border-t border-slate-200/60 flex items-center justify-between text-xs">
                 <span
-                  className={`font-medium ${
+                  className={`font-bold ${
                     isFound
-                      ? 'text-emerald-400'
+                      ? 'text-emerald-800'
                       : isPartial
-                      ? 'text-amber-400'
+                      ? 'text-amber-800'
                       : isConflict
-                      ? 'text-rose-400 font-semibold'
-                      : 'text-orange-400 font-semibold'
+                      ? 'text-rose-800'
+                      : 'text-orange-900'
                   }`}
                 >
                   {field.status}
                 </span>
-                <span className="text-slate-400 text-[11px]">
+                <span className="text-slate-500 text-[11px] font-medium">
                   {field.claimsCount || 0} claim{field.claimsCount === 1 ? '' : 's'}
                 </span>
               </div>
@@ -127,10 +123,10 @@ export function CompletenessRadar({ completenessMap = {}, fields = [], disclaime
       </div>
 
       {/* Mandatory Official Disclaimer */}
-      <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center gap-2.5 text-xs text-slate-400 bg-navy-900/60 p-3 rounded-lg border border-slate-800/60">
-        <HelpCircle className="w-4 h-4 text-cyan-400 shrink-0" />
+      <div className="mt-6 pt-4 border-t border-slate-200 flex items-center gap-2.5 text-xs text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-200">
+        <HelpCircle className="w-4 h-4 text-blue-700 shrink-0" />
         <span>
-          <strong className="text-slate-300 font-semibold">Epistemic Scope:</strong>{' '}
+          <strong className="text-slate-800 font-bold">Epistemic Scope:</strong>{' '}
           {disclaimer || 'Completeness reflects reviewed sources only. Absence in reviewed sources does not imply absence in unreviewed regulations.'}
         </span>
       </div>

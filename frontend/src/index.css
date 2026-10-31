@@ -4,39 +4,41 @@
 
 @layer base {
   body {
-    @apply bg-[#070B14] text-slate-100 font-sans;
+    @apply bg-slate-50 text-slate-900 font-sans antialiased;
+    background-color: #F8FAFC;
     background-image: 
-      radial-gradient(at 15% 15%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
-      radial-gradient(at 85% 85%, rgba(139, 92, 246, 0.06) 0px, transparent 50%),
-      radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.04) 0px, transparent 60%);
+      radial-gradient(#CBD5E1 0.75px, transparent 0.75px), 
+      radial-gradient(#CBD5E1 0.75px, #F8FAFC 0.75px);
+    background-size: 30px 30px;
+    background-position: 0 0, 15px 15px;
     background-attachment: fixed;
   }
 }
 
-/* Custom scrollbars */
+/* Crisp Clean Scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #0A0F1E;
+  background: #F1F5F9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #CBD5E1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94A3B8;
 }
 
-.glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(51, 65, 85, 0.6);
+.portal-card {
+  @apply bg-white border border-slate-200/90 rounded-xl shadow-card transition-all duration-200;
 }
 
-.glass-card {
-  background: rgba(14, 23, 43, 0.85);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(30, 41, 59, 0.8);
+.portal-card:hover {
+  @apply shadow-card-hover border-slate-300;
+}
+
+.badge-tag {
+  @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
 }

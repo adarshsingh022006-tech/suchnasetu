@@ -5,7 +5,6 @@ import {
   FileText, 
   UploadCloud, 
   Plus, 
-  Sparkles, 
   Layers, 
   ArrowRight, 
   CheckCircle2, 
@@ -50,7 +49,7 @@ export function WorkspacePage({
     try {
       await onAddUrl(inputUrl);
       setInputUrl('');
-      setFeedback({ type: 'success', message: 'URL successfully scraped and added to research session.' });
+      setFeedback({ type: 'success', message: 'URL successfully scraped and ingested.' });
     } catch (err) {
       setFeedback({ type: 'error', message: err.message || 'Failed to scrape URL.' });
     } finally {
@@ -61,7 +60,7 @@ export function WorkspacePage({
   const handleTextSubmit = async (e) => {
     e.preventDefault();
     if (!inputText || inputText.length < 20) {
-      setFeedback({ type: 'error', message: 'Text must be at least 20 characters long.' });
+      setFeedback({ type: 'error', message: 'Text excerpt must be at least 20 characters.' });
       return;
     }
     setIsSubmittingSource(true);
@@ -70,7 +69,7 @@ export function WorkspacePage({
       await onAddText({ title: inputTitle || 'Manual Evidence Excerpt', text: inputText });
       setInputText('');
       setInputTitle('');
-      setFeedback({ type: 'success', message: 'Text evidence successfully added.' });
+      setFeedback({ type: 'success', message: 'Text evidence added.' });
     } catch (err) {
       setFeedback({ type: 'error', message: err.message || 'Failed to add text.' });
     } finally {
@@ -86,7 +85,7 @@ export function WorkspacePage({
     try {
       await onUploadPdf(selectedFile);
       setSelectedFile(null);
-      setFeedback({ type: 'success', message: 'PDF parsed and text layers extracted.' });
+      setFeedback({ type: 'success', message: 'PDF document parsed and text layers ingested.' });
     } catch (err) {
       setFeedback({ type: 'error', message: err.message || 'Failed to process PDF.' });
     } finally {
@@ -95,34 +94,34 @@ export function WorkspacePage({
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 py-6">
+    <div className="max-w-5xl mx-auto space-y-6 py-6">
       {/* Workspace Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-indigo-400" />
-            <h1 className="text-2xl font-bold text-white tracking-tight">Research Workspace</h1>
+            <span className="w-2 h-2 rounded-full bg-blue-700" />
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Research Workspace</h1>
           </div>
-          <p className="text-sm text-slate-400 mt-1">
-            Define your inquiry, gather evidence from URLs, PDFs, or raw text, and run the 9-step intelligence engine.
+          <p className="text-xs text-slate-500 mt-1">
+            Specify the research inquiry, assemble sources (URLs, PDFs, circular text), and execute the 9-step analysis.
           </p>
         </div>
 
         <button
           onClick={onLoadDemo}
           disabled={isAnalyzing}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-navy-850 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold shadow-sm transition"
+          className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold transition"
         >
-          <Cpu className="w-4 h-4 text-emerald-400" />
+          <Cpu className="w-4 h-4 text-blue-700" />
           <span>Load Official Scholarship Case</span>
         </button>
       </div>
 
       {/* Inquiry & Domain Config */}
-      <div className="glass-panel rounded-2xl p-6 border border-slate-800 space-y-5">
+      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
         <div>
-          <label className="block text-xs uppercase font-bold tracking-wider text-slate-300 mb-2">
-            Research Question / Inquiry
+          <label className="block text-xs uppercase font-bold tracking-wider text-slate-700 mb-1.5">
+            Research Inquiry / Question
           </label>
           <div className="relative">
             <input
@@ -130,21 +129,21 @@ export function WorkspacePage({
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="e.g., What should I verify before applying for this scholarship?"
-              className="w-full pl-11 pr-4 py-3 rounded-xl bg-navy-950 border border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white placeholder-slate-500 text-sm font-medium transition"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-900 placeholder-slate-400 text-sm font-semibold transition"
             />
-            <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
           <div>
-            <label className="block text-xs uppercase font-bold tracking-wider text-slate-300 mb-2">
-              Research Domain Schema
+            <label className="block text-xs uppercase font-bold tracking-wider text-slate-700 mb-1.5">
+              Domain Inquiry Schema
             </label>
             <select
               value={domain}
               onChange={(e) => setDomain(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-navy-950 border border-slate-700 text-slate-200 text-sm focus:border-indigo-500 transition"
+              className="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-slate-800 text-xs font-semibold focus:border-blue-600 transition"
             >
               <option value="scholarship">Scholarship & Academic Grants (Hackathon Primary)</option>
               <option value="clinical_health">Medical & Clinical Guidelines</option>
@@ -154,27 +153,27 @@ export function WorkspacePage({
           </div>
 
           <div className="flex flex-col justify-end">
-            <div className="flex items-center gap-2 text-xs text-slate-400 bg-navy-950/80 p-2.5 rounded-xl border border-slate-800">
-              <Shield className="w-4 h-4 text-indigo-400 shrink-0" />
-              <span>SSRF Guard active: Loopback and RFC 1918 private subnets blocked.</span>
+            <div className="flex items-center gap-2 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <Shield className="w-4 h-4 text-blue-700 shrink-0" />
+              <span>SSRF Security Protection Active: Loopback and RFC 1918 private IPs are blocked.</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Source Ingestion Tabs */}
-      <div className="glass-panel rounded-2xl p-6 border border-slate-800">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-bold text-white">Add Evidence Source</h3>
-            <span className="text-xs text-slate-400">({sources.length} active sources in workspace)</span>
+            <h3 className="text-sm font-bold text-slate-900">Add Evidence Source</h3>
+            <span className="text-xs text-slate-500 font-medium">({sources.length} active in workspace)</span>
           </div>
 
-          <div className="flex rounded-lg bg-navy-950 p-1 border border-slate-800">
+          <div className="flex rounded-lg bg-slate-100 p-1 border border-slate-200">
             <button
               onClick={() => setActiveInputTab('url')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                activeInputTab === 'url' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-slate-200'
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition ${
+                activeInputTab === 'url' ? 'bg-white text-blue-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <Globe className="w-3.5 h-3.5" />
@@ -182,8 +181,8 @@ export function WorkspacePage({
             </button>
             <button
               onClick={() => setActiveInputTab('text')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                activeInputTab === 'text' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-slate-200'
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition ${
+                activeInputTab === 'text' ? 'bg-white text-blue-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
@@ -191,8 +190,8 @@ export function WorkspacePage({
             </button>
             <button
               onClick={() => setActiveInputTab('pdf')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                activeInputTab === 'pdf' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-slate-200'
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition ${
+                activeInputTab === 'pdf' ? 'bg-white text-blue-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <UploadCloud className="w-3.5 h-3.5" />
@@ -203,66 +202,66 @@ export function WorkspacePage({
 
         {/* Tab 1: Web URL */}
         {activeInputTab === 'url' && (
-          <form onSubmit={handleUrlSubmit} className="mt-5 space-y-4">
-            <div className="flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleUrlSubmit} className="mt-4 space-y-3">
+            <div className="flex flex-col sm:flex-row gap-2.5">
               <input
                 type="url"
                 required
                 value={inputUrl}
                 onChange={(e) => setInputUrl(e.target.value)}
-                placeholder="https://example-scholarship-portal.gov.in/notice-2025"
-                className="flex-1 px-4 py-2.5 rounded-xl bg-navy-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:border-indigo-500 transition"
+                placeholder="https://scholarships.gov.in/schemes/notification-2025"
+                className="flex-1 px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-xs focus:border-blue-600 transition"
               />
               <button
                 type="submit"
                 disabled={isSubmittingSource || !inputUrl}
-                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition disabled:opacity-50"
+                className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs transition disabled:opacity-50"
               >
                 {isSubmittingSource ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
                     <span>Scraping...</span>
                   </>
                 ) : (
                   <>
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-3.5 h-3.5" />
                     <span>Scrape & Ingest</span>
                   </>
                 )}
               </button>
             </div>
-            <p className="text-[11px] text-slate-400">
-              Cheerio extractor extracts main text while stripping navigation, cookie banners, advertisements, and footers.
+            <p className="text-[11px] text-slate-500">
+              Cheerio extractor extracts article paragraphs while safely discarding navigation headers, advertisements, and footers.
             </p>
           </form>
         )}
 
         {/* Tab 2: Paste Text */}
         {activeInputTab === 'text' && (
-          <form onSubmit={handleTextSubmit} className="mt-5 space-y-4">
+          <form onSubmit={handleTextSubmit} className="mt-4 space-y-3">
             <input
               type="text"
               value={inputTitle}
               onChange={(e) => setInputTitle(e.target.value)}
-              placeholder="Source Title / Label (e.g. Official Circular No. 42)"
-              className="w-full px-4 py-2.5 rounded-xl bg-navy-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:border-indigo-500 transition"
+              placeholder="Source Title (e.g. State Welfare Department Circular No. 12)"
+              className="w-full px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-xs focus:border-blue-600 transition"
             />
             <textarea
-              rows={4}
+              rows={3}
               required
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Paste article text, circular excerpt, or policy terms here..."
-              className="w-full px-4 py-2.5 rounded-xl bg-navy-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:border-indigo-500 transition"
+              placeholder="Paste official notification text, circular excerpt, or guidelines here..."
+              className="w-full px-3.5 py-2 rounded-xl bg-white border border-slate-300 text-slate-900 placeholder-slate-400 text-xs focus:border-blue-600 transition"
             />
             <div className="flex justify-end">
               <button
                 type="submit"
                 disabled={isSubmittingSource || !inputText}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs transition disabled:opacity-50"
               >
-                <Plus className="w-4 h-4" />
-                <span>Add Evidence Text</span>
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add Text Evidence</span>
               </button>
             </div>
           </form>
@@ -270,8 +269,8 @@ export function WorkspacePage({
 
         {/* Tab 3: Upload PDF */}
         {activeInputTab === 'pdf' && (
-          <form onSubmit={handlePdfSubmit} className="mt-5 space-y-4">
-            <div className="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-6 text-center transition cursor-pointer bg-navy-950/50">
+          <form onSubmit={handlePdfSubmit} className="mt-4 space-y-3">
+            <div className="border-2 border-dashed border-slate-300 hover:border-blue-600 rounded-xl p-5 text-center transition cursor-pointer bg-slate-50">
               <input
                 type="file"
                 accept=".pdf,application/pdf"
@@ -280,18 +279,18 @@ export function WorkspacePage({
                 className="hidden"
               />
               <label htmlFor="pdf-upload" className="cursor-pointer block">
-                <UploadCloud className="w-8 h-8 text-indigo-400 mx-auto mb-2" />
+                <UploadCloud className="w-7 h-7 text-blue-700 mx-auto mb-1.5" />
                 {selectedFile ? (
                   <div>
-                    <span className="text-sm font-semibold text-slate-200">{selectedFile.name}</span>
-                    <span className="text-xs text-slate-400 block mt-1">
-                      ({Math.round(selectedFile.size / 1024)} KB) - Click to change
+                    <span className="text-xs font-bold text-slate-900">{selectedFile.name}</span>
+                    <span className="text-[11px] text-slate-500 block mt-0.5">
+                      ({Math.round(selectedFile.size / 1024)} KB) - Click to replace
                     </span>
                   </div>
                 ) : (
                   <div>
-                    <span className="text-sm font-semibold text-slate-300">Click to upload official PDF</span>
-                    <span className="text-xs text-slate-400 block mt-1">Up to 10MB · Extracted via server-side pdf-parse</span>
+                    <span className="text-xs font-bold text-slate-700">Click to upload official PDF</span>
+                    <span className="text-[11px] text-slate-500 block mt-0.5">Up to 10MB · Parsed via pdf-parse</span>
                   </div>
                 )}
               </label>
@@ -301,10 +300,10 @@ export function WorkspacePage({
               <button
                 type="submit"
                 disabled={isSubmittingSource || !selectedFile}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs transition disabled:opacity-50"
               >
-                <Plus className="w-4 h-4" />
-                <span>Extract PDF Text</span>
+                <Plus className="w-3.5 h-3.5" />
+                <span>Parse PDF Text</span>
               </button>
             </div>
           </form>
@@ -313,10 +312,10 @@ export function WorkspacePage({
         {/* Feedback Message */}
         {feedback.message && (
           <div
-            className={`mt-4 p-3 rounded-xl text-xs font-medium flex items-center gap-2 ${
+            className={`mt-3 p-2.5 rounded-lg text-xs font-semibold flex items-center gap-2 ${
               feedback.type === 'error'
-                ? 'bg-rose-950/40 text-rose-300 border border-rose-800/60'
-                : 'bg-emerald-950/40 text-emerald-300 border border-emerald-800/60'
+                ? 'bg-rose-50 text-rose-800 border border-rose-200'
+                : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
             }`}
           >
             {feedback.type === 'error' ? <AlertCircle className="w-4 h-4 shrink-0" /> : <CheckCircle2 className="w-4 h-4 shrink-0" />}
@@ -325,41 +324,41 @@ export function WorkspacePage({
         )}
       </div>
 
-      {/* Active Workspace Sources List Preview */}
-      <div className="glass-panel rounded-2xl p-6 border border-slate-800">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+      {/* Active Workspace Sources */}
+      <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-bold text-white">Active Sources in Session</h3>
-            <span className="px-2 py-0.5 rounded-full text-xs bg-slate-800 text-slate-300 font-mono">
+            <h3 className="text-sm font-bold text-slate-900">Active Sources in Session</h3>
+            <span className="px-2 py-0.5 rounded-full text-xs bg-slate-100 text-slate-700 font-bold">
               {sources.length}
             </span>
           </div>
         </div>
 
         {sources.length === 0 ? (
-          <div className="text-center py-12 text-slate-400">
-            <FileCheck2 className="w-10 h-10 mx-auto text-slate-400 mb-2" />
-            <p className="text-sm">No sources added to workspace yet.</p>
-            <p className="text-xs text-slate-400 mt-1">
-              Add a URL, paste text, upload a PDF, or click "Load Official Scholarship Case" above.
+          <div className="text-center py-10 text-slate-500">
+            <FileCheck2 className="w-8 h-8 mx-auto text-slate-400 mb-1.5" />
+            <p className="text-xs font-semibold text-slate-700">No sources added to workspace yet.</p>
+            <p className="text-[11px] text-slate-500 mt-0.5">
+              Paste a URL, upload a PDF, or click "Load Official Scholarship Case" above.
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-800/60 mt-2">
+          <div className="divide-y divide-slate-100 mt-1">
             {sources.map((src, idx) => (
-              <div key={src.sourceId || idx} className="py-3.5 flex items-center justify-between gap-4">
+              <div key={src.sourceId || idx} className="py-3 flex items-center justify-between gap-4">
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2.5 flex-wrap">
-                    <span className="text-sm font-semibold text-slate-200 truncate">{src.title}</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-xs font-bold text-slate-900 truncate">{src.title}</span>
                     <SourceAuthorityBadge category={src.sourceType} />
                     {src.demoLabel && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                      <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200 font-bold">
                         {src.demoLabel}
                       </span>
                     )}
                   </div>
-                  <div className="text-xs text-slate-400 flex items-center gap-3 mt-1 truncate">
-                    <span>{src.domain || 'Direct Text'}</span>
+                  <div className="text-[11px] text-slate-500 flex items-center gap-2.5 mt-0.5 truncate">
+                    <span>{src.domain || 'Direct Text Input'}</span>
                     <span>·</span>
                     <span>{src.publishedDate ? `Published: ${src.publishedDate}` : 'Undated'}</span>
                     <span>·</span>
@@ -371,7 +370,7 @@ export function WorkspacePage({
 
                 <button
                   onClick={() => onRemoveSource(src.sourceId)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-950/30 transition shrink-0"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition shrink-0"
                   title="Remove Source"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -384,14 +383,14 @@ export function WorkspacePage({
 
       {/* Run Analysis CTA */}
       <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="text-xs text-slate-400">
-          The 9-step engine will extract structured claims, detect missing fields, evaluate contradictions, and generate a checklist.
+        <p className="text-xs text-slate-500">
+          The 9-step engine will extract claims, compare expected dimensions, and detect omissions.
         </p>
 
         <button
           onClick={onRunAnalysis}
           disabled={isAnalyzing || sources.length === 0}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:scale-[1.02] active:scale-[0.98] transition disabled:opacity-50"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-xs bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition disabled:opacity-50"
         >
           {isAnalyzing ? (
             <>
