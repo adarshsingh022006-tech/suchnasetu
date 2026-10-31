@@ -1,12 +1,23 @@
 import express from 'express';
 import multer from 'multer';
 import crypto from 'crypto';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { StorageRepository } from '../models/storage.js';
 import { scrapeWebpage, computeContentHash } from '../services/urlScraper.js';
 import { extractTextFromPdf } from '../services/pdfExtractor.js';
 import { DEMO_SCHOLARSHIP_DATA } from '../data/demoScholarshipSources.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const router = express.Router();
+
+// GET /api/sources/sample-pdf - Download a real sample PDF to test upload
+router.get('/sample-pdf', (req, res) => {
+  const filePath = path.resolve(__dirname, '../../sample-documents/Sample-Policy-Report.pdf');
+  res.download(filePath, 'SuchnaSetu-Sample-Policy-Report.pdf');
+});
 
 // Memory storage for file uploads
 const upload = multer({

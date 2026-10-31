@@ -150,6 +150,34 @@ function evaluatePairConflict(fieldId, c1, c2) {
     }
   }
 
+  // 5. Clinical Dosage Regimen Conflict
+  if (fieldId === 'dosage') {
+    const isOnce = v1.includes('once daily') || v2.includes('once daily');
+    const isTwice = v1.includes('twice daily') || v2.includes('twice daily');
+    if (isOnce && isTwice) {
+      return {
+        isConflict: true,
+        type: 'Clinical Dosing Frequency Divergence',
+        severity: 'critical',
+        explanation: `Conflicting dosing regimens detected between clinical monograph and practice advisory ("${c1.value}" vs "${c2.value}"). Inappropriate dosing risks adverse cardiovascular events.`,
+        suggestedAction: 'Prioritize approved statutory drug monograph and consult medical board before clinical prescription.'
+      };
+    }
+  }
+
+  // 6. Policy Statutory Deadline & Penalties Conflict
+  if (fieldId === 'statutory_deadline' || fieldId === 'penalties') {
+    if (v1 !== v2 && !v1.includes(v2) && !v2.includes(v1)) {
+      return {
+        isConflict: true,
+        type: fieldId === 'statutory_deadline' ? 'Statutory Enforcement Timeline Mismatch' : 'Penalty Ceiling Discrepancy',
+        severity: 'critical',
+        explanation: `Regulatory sources declare conflicting parameters: "${c1.value}" vs "${c2.value}". Outdated draft figures differ significantly from final gazette declarations.`,
+        suggestedAction: 'Verify against final Ministry of Electronics & IT (MeitY) Gazette Notification.'
+      };
+    }
+  }
+
   return { isConflict: false };
 }
 
@@ -169,7 +197,17 @@ function getFieldName(fieldId) {
     application_deadline: 'Application Deadline',
     renewal_conditions: 'Renewal Conditions',
     application_process: 'Application Process & Mode',
-    official_application_link: 'Official Application Link'
+    official_application_link: 'Official Application Link',
+    indication: 'Approved Indication & Diagnosis',
+    dosage: 'Dosage & Administration',
+    contraindications: 'Contraindications & Risks',
+    clinical_evidence: 'Trial Evidence & Efficacy',
+    side_effects: 'Reported Adverse Reactions',
+    jurisdiction: 'Jurisdiction & Applicability',
+    compliance_mandate: 'Mandatory Compliance Actions',
+    statutory_deadline: 'Effective Date & Enforcement Deadline',
+    penalties: 'Penalties & Non-Compliance Repercussions',
+    dispute_resolution: 'Appeals & Recourse Mechanism'
   };
   return map[fieldId] || fieldId;
 }

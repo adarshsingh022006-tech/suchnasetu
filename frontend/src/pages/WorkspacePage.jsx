@@ -13,7 +13,8 @@ import {
   Trash2,
   FileCheck2,
   Cpu,
-  RefreshCw
+  RefreshCw,
+  Download
 } from 'lucide-react';
 import { SourceAuthorityBadge } from '../components/SourceAuthorityBadge.jsx';
 
@@ -107,14 +108,33 @@ export function WorkspacePage({
           </p>
         </div>
 
-        <button
-          onClick={onLoadDemo}
-          disabled={isAnalyzing}
-          className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold transition"
-        >
-          <Cpu className="w-4 h-4 text-blue-700" />
-          <span>Load Official Scholarship Case</span>
-        </button>
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={() => onLoadDemo('scholarship')}
+            disabled={isAnalyzing}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold transition"
+            title="Load Official Scholarship Benchmark Case"
+          >
+            <Cpu className="w-3.5 h-3.5 text-blue-700" />
+            <span>Scholarship Benchmark</span>
+          </button>
+          <button
+            onClick={() => onLoadDemo('clinical')}
+            disabled={isAnalyzing}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold transition"
+            title="Load Clinical Trial Guidelines Benchmark Case"
+          >
+            <span>Clinical Trial Case</span>
+          </button>
+          <button
+            onClick={() => onLoadDemo('policy')}
+            disabled={isAnalyzing}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold transition"
+            title="Load DPDP Act Regulatory Compliance Case"
+          >
+            <span>DPDP Policy Case</span>
+          </button>
+        </div>
       </div>
 
       {/* Inquiry & Domain Config */}
@@ -230,9 +250,27 @@ export function WorkspacePage({
                 )}
               </button>
             </div>
-            <p className="text-[11px] text-slate-500">
-              Cheerio extractor extracts article paragraphs while safely discarding navigation headers, advertisements, and footers.
-            </p>
+            <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1 flex-wrap gap-2">
+              <span>Cheerio extractor extracts article paragraphs while safely discarding navigation headers and ads.</span>
+              <div className="flex items-center gap-1.5 font-medium">
+                <span className="text-slate-400">Sample URLs:</span>
+                <button
+                  type="button"
+                  onClick={() => setInputUrl('https://scholarships.gov.in/schemes/post-matric-2025')}
+                  className="text-blue-700 hover:underline"
+                >
+                  Portal Notice
+                </button>
+                <span>·</span>
+                <button
+                  type="button"
+                  onClick={() => setInputUrl('https://educationadvisory.org.in/bulletin/scholarship-guide-2024')}
+                  className="text-blue-700 hover:underline"
+                >
+                  Advisory Guide
+                </button>
+              </div>
+            </div>
           </form>
         )}
 
@@ -296,7 +334,16 @@ export function WorkspacePage({
               </label>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between pt-1">
+              <a
+                href="/api/sources/sample-pdf"
+                download="SuchnaSetu-Sample-Policy-Report.pdf"
+                className="inline-flex items-center gap-1.5 text-xs text-blue-700 hover:text-blue-900 font-semibold underline"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download Sample Policy PDF to test upload</span>
+              </a>
+
               <button
                 type="submit"
                 disabled={isSubmittingSource || !selectedFile}

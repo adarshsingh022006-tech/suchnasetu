@@ -2,7 +2,7 @@ import express from 'express';
 import crypto from 'crypto';
 import { StorageRepository } from '../models/storage.js';
 import { executeIntelligencePipeline } from '../services/intelligence/pipeline.js';
-import { DEMO_SCHOLARSHIP_DATA } from '../data/demoScholarshipSources.js';
+import { DEMO_SCHOLARSHIP_DATA, ALL_DEMO_SCENARIOS } from '../data/demoScholarshipSources.js';
 
 const router = express.Router();
 
@@ -120,17 +120,20 @@ router.patch('/:id/checklist/:itemId', async (req, res) => {
   }
 });
 
-// POST /api/research/demo - One-click bootstrap of official Digital Dark Spot scholarship use case
+// POST /api/research/demo/bootstrap - Bootstrap benchmark demonstration use cases
 router.post('/demo/bootstrap', async (req, res) => {
   try {
-    const sessionId = `demo_scholarship_${Date.now()}`;
+    const scenarioKey = req.body?.scenario || req.query?.scenario || 'scholarship';
+    const selectedData = ALL_DEMO_SCENARIOS[scenarioKey] || DEMO_SCHOLARSHIP_DATA;
+
+    const sessionId = `demo_${scenarioKey}_${Date.now()}`;
     const session = await StorageRepository.createSession({
       sessionId,
-      question: DEMO_SCHOLARSHIP_DATA.question,
-      domain: DEMO_SCHOLARSHIP_DATA.domain
+      question: selectedData.question,
+      domain: selectedData.domain
     });
 
-    for (const src of DEMO_SCHOLARSHIP_DATA.sources) {
+    for (const src of selectedData.sources) {
       await StorageRepository.addSource({
         sessionId,
         ...src,
@@ -151,7 +154,8 @@ router.post('/demo/bootstrap', async (req, res) => {
     res.status(201).json({
       success: true,
       sessionId,
-      message: 'Demonstration scholarship research initialized with 3 benchmark sources and full intelligence report.',
+      scenario: scenarioKey,
+      message: `Demonstration research initialized for '${scenarioKey}' with ${selectedData.sources.length} benchmark sources and full intelligence report.`,
       session,
       report
     });

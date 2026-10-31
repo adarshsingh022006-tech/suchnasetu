@@ -42,3 +42,20 @@
 .badge-tag {
   @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
 }
+
+/* Official Clean Print Stylesheet */
+@media print {
+  header, footer, button, .no-print {
+    display: none !important;
+  }
+  body {
+    background: #FFFFFF !important;
+    background-image: none !important;
+    color: #0F172A !important;
+  }
+  .portal-card, .bg-white {
+    box-shadow: none !important;
+    border: 1px solid #CBD5E1 !important;
+    page-break-inside: avoid;
+  }
+}

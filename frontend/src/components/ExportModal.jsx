@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Download, Copy, Check, FileText } from 'lucide-react';
+import { X, Download, Copy, Check, FileText, Printer } from 'lucide-react';
 
 export function ExportModal({ isOpen, onClose, report, session }) {
   const [copied, setCopied] = useState(false);
@@ -83,9 +83,13 @@ Disclaimer: ${report.completenessDisclaimer || report.executiveSummary?.epistemi
     downloadAnchor.remove();
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
-      <div className="bg-white border border-slate-200 rounded-2xl max-w-xl w-full p-6 shadow-xl relative">
+      <div className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-6 shadow-xl relative">
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2">
             <FileText className="w-5 h-5 text-blue-700" />
@@ -103,21 +107,21 @@ Disclaimer: ${report.completenessDisclaimer || report.executiveSummary?.epistemi
           Export the full verified intelligence report, complete with verbatim quotes, detected gaps, and next verification steps.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
           <button
             onClick={handleCopyMarkdown}
-            className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
+            className="flex flex-col items-center justify-center p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
           >
             {copied ? <Check className="w-5 h-5 text-emerald-600" /> : <Copy className="w-5 h-5 text-blue-700" />}
             <span className="text-xs font-bold text-slate-800 mt-2">
-              {copied ? 'Copied!' : 'Copy Markdown'}
+              {copied ? 'Copied!' : 'Copy Text'}
             </span>
-            <span className="text-[10px] text-slate-500 mt-0.5">Clipboard text</span>
+            <span className="text-[10px] text-slate-500 mt-0.5">Clipboard</span>
           </button>
 
           <button
             onClick={handleDownloadMarkdown}
-            className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
+            className="flex flex-col items-center justify-center p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
           >
             <Download className="w-5 h-5 text-blue-700" />
             <span className="text-xs font-bold text-slate-800 mt-2">Download .MD</span>
@@ -126,11 +130,20 @@ Disclaimer: ${report.completenessDisclaimer || report.executiveSummary?.epistemi
 
           <button
             onClick={handleDownloadJson}
-            className="flex flex-col items-center justify-center p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
+            className="flex flex-col items-center justify-center p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
           >
             <Download className="w-5 h-5 text-blue-700" />
             <span className="text-xs font-bold text-slate-800 mt-2">Download .JSON</span>
-            <span className="text-[10px] text-slate-500 mt-0.5">Raw structured data</span>
+            <span className="text-[10px] text-slate-500 mt-0.5">Raw data</span>
+          </button>
+
+          <button
+            onClick={handlePrint}
+            className="flex flex-col items-center justify-center p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 transition"
+          >
+            <Printer className="w-5 h-5 text-blue-700" />
+            <span className="text-xs font-bold text-slate-800 mt-2">Print / PDF</span>
+            <span className="text-[10px] text-slate-500 mt-0.5">Browser print</span>
           </button>
         </div>
 

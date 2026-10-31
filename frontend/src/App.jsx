@@ -57,11 +57,15 @@ export default function App() {
     return data.session.sessionId;
   };
 
-  const handleQuickDemo = async () => {
+  const handleQuickDemo = async (scenario = 'scholarship') => {
     setIsAnalyzing(true);
-    setAnalysisStep('Ingesting official scholarship benchmark circulars...');
+    setAnalysisStep(`Ingesting benchmark circulars for '${scenario}'...`);
     try {
-      const res = await fetch('/api/research/demo/bootstrap', { method: 'POST' });
+      const res = await fetch('/api/research/demo/bootstrap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scenario })
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to bootstrap demo');
 

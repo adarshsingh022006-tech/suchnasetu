@@ -1,6 +1,6 @@
 /**
- * Benchmark Demonstration Dataset for Hackathon 2026:
- * Follows the official problem statement "DIGITAL DARK SPOT – AI-Assisted Information Gap Detection Platform".
+ * Benchmark Demonstration Datasets for Hackathon 2026:
+ * Primary: Official problem statement "DIGITAL DARK SPOT – AI-Assisted Information Gap Detection Platform".
  * All entries are explicitly labeled as demonstration data.
  */
 
@@ -87,4 +87,106 @@ Please make sure to have all your documents ready before the cutoff date. You ca
       demoLabel: "Demonstration Data - Community Forum Thread"
     }
   ]
+};
+
+export const DEMO_CLINICAL_DATA = {
+  question: "What are the approved dosage limits, contraindications, and patient exclusions for this cardiovascular protocol?",
+  domain: "clinical_health",
+  benchmarkDescription: "Clinical trial intelligence benchmark: flags omitted gestational and pediatric guidelines as 'Not found in reviewed sources' and detects contradictory daily dosing recommendations.",
+  sources: [
+    {
+      sourceId: "src_clin_01_monograph",
+      title: "National Health Authority - Clinical Protocol Monograph 2025",
+      url: "https://clinicalguidelines.gov.in/protocols/cardio-2025",
+      domain: "clinicalguidelines.gov.in",
+      sourceType: "official_government",
+      publishedDate: "2025-03-12",
+      retrievedDate: "2026-10-31T10:00:00Z",
+      extractedContent: `Clinical Monograph: Therapeutic Standards for Cardio-Metabolic Interventions (2025 Release).
+
+1. Approved Indication:
+Indicated for adult patients with refractory primary arterial hypertension uncontrolled by first-line ACE inhibitors.
+
+2. Standard Dosage & Administration:
+Administer 10mg orally once daily with morning food. Titration to maximum 20mg daily permitted after 4 weeks of continuous hemodynamic monitoring.
+
+3. Documented Contraindications:
+Strictly contraindicated in patients with severe hepatic impairment (Child-Pugh Class C) or history of angioedema.
+
+4. Clinical Trial Endpoints:
+Achieved statistically significant mean systolic reduction of 14.2 mmHg (p < 0.001) across 4,200 randomized subjects.`,
+      demoLabel: "Demonstration Data - Clinical Monograph Simulation"
+    },
+    {
+      sourceId: "src_clin_02_advisory",
+      title: "Medical Practice Advisory Bulletin (2024 Edition)",
+      url: "https://cardiopractice.org/bulletins/hypertension-regimen",
+      domain: "cardiopractice.org",
+      sourceType: "institutional_academic",
+      publishedDate: "2024-04-18",
+      retrievedDate: "2026-10-31T10:05:00Z",
+      extractedContent: `Cardio Practice Advisory: Practical Dosing Regimens for Resistant Hypertension.
+
+Administration Recommendation:
+Physicians are advised to initiate therapy with 20mg twice daily in divided doses to achieve rapid steady-state plasma concentrations within 48 hours.
+
+Cautionary Notes:
+Ensure baseline serum creatinine and electrolyte panels are recorded prior to prescription. Pediatric dosing safety has not been evaluated.`,
+      demoLabel: "Demonstration Data - Dosing Advisory Conflict"
+    }
+  ]
+};
+
+export const DEMO_POLICY_DATA = {
+  question: "What are the mandatory statutory compliance obligations and exemptions under the Data Protection Act?",
+  domain: "policy_legal",
+  benchmarkDescription: "Regulatory policy benchmark: flags absent negative-list transfer exemptions and highlights conflicting penalty schedules.",
+  sources: [
+    {
+      sourceId: "src_pol_01_gazette",
+      title: "Gazette Notification: Digital Personal Data Protection Rules 2025",
+      url: "https://meity.gov.in/gazette/dpdp-rules-2025",
+      domain: "meity.gov.in",
+      sourceType: "official_government",
+      publishedDate: "2025-06-01",
+      retrievedDate: "2026-10-31T10:15:00Z",
+      extractedContent: `Ministry of Electronics & Information Technology Gazette Notification.
+
+1. Jurisdiction & Applicability:
+Applies to all Data Fiduciaries processing personal data within the territory of India, or outside India if offering goods or services to Data Principals in India.
+
+2. Mandatory Compliance Mandates:
+Data Fiduciaries must appoint a resident Data Protection Officer (DPO) and provide accessible mechanisms for consent withdrawal in 22 scheduled languages.
+
+3. Statutory Enforcement Deadline:
+Full statutory compliance is mandated by November 30, 2025. Non-compliance after this date is subject to direct adjudication.
+
+4. Statutory Penalties:
+Failure to observe security safeguards resulting in data breach is punishable by statutory penalties up to INR 250 Crores per adjudication.`,
+      demoLabel: "Demonstration Data - Official Gazette Simulation"
+    },
+    {
+      sourceId: "src_pol_02_digest",
+      title: "Corporate Legal Advisory - Privacy Compliance Guide 2024",
+      url: "https://privacylawreview.org/analysis/data-protection-compliance-2024",
+      domain: "privacylawreview.org",
+      sourceType: "institutional_academic",
+      publishedDate: "2024-02-15",
+      retrievedDate: "2026-10-31T10:20:00Z",
+      extractedContent: `Corporate Legal Analysis: Preparing for Cross-Border Data Regulations (2024).
+
+Timeline Considerations:
+Organizations should target an initial readiness milestone of August 31, 2024 to align with early parliamentary committee drafts.
+
+Penalty Calculations:
+The initial committee draft proposed penalties capped at INR 100 Crores, though higher multipliers remain under active stakeholder debate. Exemption schedules for cross-border processing remain unnotified.`,
+      demoLabel: "Demonstration Data - Outdated Legal Advisory"
+    }
+  ]
+};
+
+export const ALL_DEMO_SCENARIOS = {
+  scholarship: DEMO_SCHOLARSHIP_DATA,
+  clinical: DEMO_CLINICAL_DATA,
+  policy: DEMO_POLICY_DATA
 };
