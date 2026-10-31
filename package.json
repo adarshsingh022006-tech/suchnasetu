@@ -1,0 +1,24 @@
+{
+  "name": "suchnasetu",
+  "version": "1.0.0",
+  "description": "SUCHNASETU - AI-Powered Information Gap Detection & Research Intelligence Platform (Shinchan Online Hackathon 2026)",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "test": "cd backend && npm test",
+    "build": "cd frontend && npm run build",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm run dev"
+  },
+  "keywords": [
+    "hackathon-2026",
+    "shinchan-hackathon",
+    "digital-dark-spot",
+    "information-gap-detection",
+    "research-intelligence",
+    "fact-checking",
+    "epistemic-ai",
+    "ssrf-protection"
+  ],
+  "author": "SuchnaSetu Team",
+  "license": "MIT"
+}
