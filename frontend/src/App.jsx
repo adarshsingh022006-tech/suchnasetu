@@ -4,6 +4,7 @@ import { Footer } from './components/Footer.jsx';
 import { ExportModal } from './components/ExportModal.jsx';
 
 import { LandingPage } from './pages/LandingPage.jsx';
+import { GuidePage } from './pages/GuidePage.jsx';
 import { WorkspacePage } from './pages/WorkspacePage.jsx';
 import { SourceManagerPage } from './pages/SourceManagerPage.jsx';
 import { DashboardPage } from './pages/DashboardPage.jsx';
@@ -211,9 +212,7 @@ export default function App() {
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onQuickDemo={handleQuickDemo}
         activeSession={{ ...session, sourcesCount: sources.length }}
-        isAnalyzing={isAnalyzing}
       />
 
       {/* Main Page Content */}
@@ -221,7 +220,13 @@ export default function App() {
         {activeTab === 'landing' && (
           <LandingPage
             onStartResearch={() => setActiveTab('workspace')}
-            onLoadDemo={handleQuickDemo}
+            onOpenGuide={() => setActiveTab('guide')}
+          />
+        )}
+
+        {activeTab === 'guide' && (
+          <GuidePage
+            onStartResearch={() => setActiveTab('workspace')}
           />
         )}
 
@@ -238,7 +243,7 @@ export default function App() {
             onUploadPdf={handleUploadPdf}
             onRemoveSource={handleRemoveSource}
             onRunAnalysis={handleRunAnalysis}
-            onLoadDemo={handleQuickDemo}
+            onOpenGuide={() => setActiveTab('guide')}
             isAnalyzing={isAnalyzing}
             analysisStep={analysisStep}
           />

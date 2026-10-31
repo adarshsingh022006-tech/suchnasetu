@@ -14,7 +14,8 @@ import {
   FileCheck2,
   Cpu,
   RefreshCw,
-  Download
+  Download,
+  BookOpen
 } from 'lucide-react';
 import { SourceAuthorityBadge } from '../components/SourceAuthorityBadge.jsx';
 
@@ -30,7 +31,7 @@ export function WorkspacePage({
   onUploadPdf,
   onRemoveSource,
   onRunAnalysis,
-  onLoadDemo,
+  onOpenGuide,
   isAnalyzing,
   analysisStep
 }) {
@@ -108,31 +109,13 @@ export function WorkspacePage({
           </p>
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => onLoadDemo('scholarship')}
-            disabled={isAnalyzing}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold transition"
-            title="Load Official Scholarship Benchmark Case"
+            onClick={onOpenGuide}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold transition"
           >
-            <Cpu className="w-3.5 h-3.5 text-blue-700" />
-            <span>Scholarship Benchmark</span>
-          </button>
-          <button
-            onClick={() => onLoadDemo('clinical')}
-            disabled={isAnalyzing}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold transition"
-            title="Load Clinical Trial Guidelines Benchmark Case"
-          >
-            <span>Clinical Trial Case</span>
-          </button>
-          <button
-            onClick={() => onLoadDemo('policy')}
-            disabled={isAnalyzing}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-semibold transition"
-            title="Load DPDP Act Regulatory Compliance Case"
-          >
-            <span>DPDP Policy Case</span>
+            <BookOpen className="w-3.5 h-3.5 text-blue-700" />
+            <span>Workflow Guide</span>
           </button>
         </div>
       </div>
@@ -152,6 +135,42 @@ export function WorkspacePage({
               className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-300 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-slate-900 placeholder-slate-400 text-sm font-semibold transition"
             />
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+          </div>
+
+          <div className="flex items-center gap-2 mt-2 flex-wrap text-[11px] text-slate-500">
+            <span className="font-semibold text-slate-600">Preset Inquiries:</span>
+            <button
+              type="button"
+              onClick={() => {
+                setQuestion("What should I verify before applying for this scholarship?");
+                setDomain("scholarship");
+              }}
+              className="text-blue-700 hover:underline"
+            >
+              Scholarship Verification
+            </button>
+            <span>·</span>
+            <button
+              type="button"
+              onClick={() => {
+                setQuestion("What are the approved dosage limits, contraindications, and patient exclusions for this cardiovascular protocol?");
+                setDomain("clinical_health");
+              }}
+              className="text-blue-700 hover:underline"
+            >
+              Clinical Protocol
+            </button>
+            <span>·</span>
+            <button
+              type="button"
+              onClick={() => {
+                setQuestion("What are the mandatory statutory compliance obligations and exemptions under the Data Protection Act?");
+                setDomain("policy_legal");
+              }}
+              className="text-blue-700 hover:underline"
+            >
+              Data Protection (DPDP)
+            </button>
           </div>
         </div>
 

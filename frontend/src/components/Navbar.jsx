@@ -7,14 +7,14 @@ import {
   FileCheck2, 
   Terminal, 
   CheckSquare, 
-  Play,
-  RotateCcw,
-  ShieldCheck
+  BookOpen,
+  Plus
 } from 'lucide-react';
 
-export function Navbar({ activeTab, setActiveTab, onQuickDemo, activeSession, isAnalyzing }) {
+export function Navbar({ activeTab, setActiveTab, activeSession }) {
   const navItems = [
     { id: 'landing', label: 'Overview', icon: Sparkles },
+    { id: 'guide', label: 'User Guide', icon: BookOpen },
     { id: 'workspace', label: 'Workspace', icon: Search },
     { id: 'sources', label: 'Sources', icon: Database, badge: activeSession?.sourcesCount },
     { id: 'dashboard', label: 'Intelligence Brief', icon: Layers },
@@ -83,25 +83,14 @@ export function Navbar({ activeTab, setActiveTab, onQuickDemo, activeSession, is
             })}
           </nav>
 
-          {/* Quick Demo CTA */}
+          {/* New Research CTA */}
           <div className="flex items-center gap-3">
             <button
-              onClick={onQuickDemo}
-              disabled={isAnalyzing}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition active:scale-[0.98] disabled:opacity-50"
+              onClick={() => setActiveTab('workspace')}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition active:scale-[0.98]"
             >
-              {isAnalyzing ? (
-                <>
-                  <RotateCcw className="w-3.5 h-3.5 animate-spin" />
-                  <span>Synthesizing...</span>
-                </>
-              ) : (
-                <>
-                  <Play className="w-3.5 h-3.5 fill-current" />
-                  <span className="hidden sm:inline">Load Scholarship Demo</span>
-                  <span className="sm:hidden">Run Demo</span>
-                </>
-              )}
+              <Plus className="w-3.5 h-3.5" />
+              <span>New Investigation</span>
             </button>
           </div>
         </div>
